@@ -1,6 +1,7 @@
 package com.human_booster.moduletaskrepository
 
 import android.content.Context
+import android.util.Log
 import androidx.room.Room
 import com.human_booster.model.Task
 import com.human_booster.moduledatabase.entity.TaskEntity
@@ -10,9 +11,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 
-class DefaultTaskRepository(
-    context: Context,
-    ) : TaskRepository {
+class DefaultTaskRepository(context: Context) : TaskRepository {
 
     private val db = Room.databaseBuilder(
         context.applicationContext,
@@ -21,7 +20,12 @@ class DefaultTaskRepository(
     ).build()
 
     override fun observeAll(): Flow<List<Task>> {
+        Log.d("DefaultTaskRepository", "observeAll")
         return db.taskDao().observeAll().map(::tasksMapper)
+    }
+
+    override suspend fun getAll(): List<Task> {
+        return db.taskDao().getAll().map(::taskMapper)
     }
 
     private fun tasksMapper(entities: List<TaskEntity>) : List<Task> =
@@ -34,13 +38,13 @@ class DefaultTaskRepository(
         status = entity.status,
     )
 
-    override suspend fun add(task: Task) {
+    override suspend fun add(label: String, description: String) {
         withContext(Dispatchers.IO) {
             db.taskDao().insert(
                 TaskEntity(
-                    label = task.label,
-                    description = task.description,
-                    status = task.status
+                    label = label,
+                    description = description,
+                    status = false
                 )
             )
         }

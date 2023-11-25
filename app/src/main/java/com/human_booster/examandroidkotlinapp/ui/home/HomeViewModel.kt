@@ -1,10 +1,12 @@
 package com.human_booster.examandroidkotlinapp.ui.home
 
+import android.content.ClipDescription
 import android.content.Intent
 import android.net.Uri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.human_booster.examandroidkotlinapp.BaseApplication
+import com.human_booster.model.Task
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -28,35 +30,33 @@ class HomeViewModel : ViewModel() {
         }
     }
 
-    fun fetchJoke() {
+    fun onAddTask(label: String, description: String) {
         viewModelScope.launch {
-            jokeRepository.fetchJoke()
+            taskRepository.add(label, description)
+        }
+    }
+    fun onDeleteTask(task: Task) {
+        viewModelScope.launch {
+            taskRepository.delete(task)
         }
     }
 
-    fun onDeleteJoke(joke: Joke) {
+    fun onEditTask(
+        task: Task,
+        newLabel: String,
+        newDescription: String,
+        newStatus: Boolean
+    ) {
         viewModelScope.launch {
-            jokeRepository.delete(joke)
-        }
-    }
-
-    fun editJoke(joke: Joke, newJokeValue: String) {
-        viewModelScope.launch {
-            jokeRepository.update(
-                joke.copy(
-                    value = newJokeValue
+            taskRepository.update(
+                task.copy(
+                    label = newLabel,
+                    description = newDescription,
+                    status = newStatus
                 )
             )
         }
     }
 
-    fun onJokeClicked(joke: Joke) {
-        val browserIntent =
-            Intent(Intent.ACTION_VIEW, Uri.parse(joke.url))
-        browserIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
 
-        BaseApplication.getInstance().startActivity(browserIntent)
-    }
-
-}
 }

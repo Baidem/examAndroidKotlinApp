@@ -12,8 +12,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.human_booster.examandroidkotlinapp.ui.home.HomeScreen
+import com.human_booster.examandroidkotlinapp.ui.home.HomeScreenState
 import com.human_booster.examandroidkotlinapp.ui.home.HomeViewModel
 import com.human_booster.examandroidkotlinapp.ui.theme.ExamAndroidKotlinAppTheme
+import com.human_booster.moduletaskrepository.TaskRepository
+import kotlinx.coroutines.flow.StateFlow
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -25,7 +28,10 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    val viewModel: HomeViewModel by viewModels()
+
+                      val viewModel: HomeViewModel by viewModels()
+//                    val toto: StateFlow<HomeScreenState> = viewModel.state
+//                    Text(text = "test in Main activity " + toto)
                     HomeScreen(viewModel)
                 }
             }

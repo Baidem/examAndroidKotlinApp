@@ -1,6 +1,8 @@
 package com.human_booster.examandroidkotlinapp
 
 import android.app.Application
+import com.human_booster.moduletaskrepository.DefaultTaskRepository
+import com.human_booster.moduletaskrepository.TaskRepository
 
 class BaseApplication : Application() {
 

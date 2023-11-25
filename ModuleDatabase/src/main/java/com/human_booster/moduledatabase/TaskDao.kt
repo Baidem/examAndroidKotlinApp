@@ -13,6 +13,9 @@ interface TaskDao {
     @Query("SELECT * FROM task")
     fun observeAll(): Flow<List<TaskEntity>>
 
+    @Query("SELECT * FROM task")
+    fun getAll(): List<TaskEntity>
+
     @Insert
     fun insert(taskEntity: TaskEntity)
 
@@ -20,7 +23,7 @@ interface TaskDao {
     fun deleteAll()
 
     @Query("DELETE FROM task WHERE id = :taskId")
-    fun deleteTask(taskId: Int)
+    fun deleteTask(taskId: Long)
 
     @Update
     fun updateTask(taskEntity: TaskEntity)
