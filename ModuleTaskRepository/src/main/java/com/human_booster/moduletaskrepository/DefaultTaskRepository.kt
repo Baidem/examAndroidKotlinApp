@@ -57,9 +57,11 @@ class DefaultTaskRepository(context: Context) : TaskRepository {
     }
 
     override suspend fun update(task: Task) {
+        Log.d("DefaultTaskRepository :", "task : " + task.toString())
         withContext(Dispatchers.IO) {
             db.taskDao().updateTask(
                 TaskEntity(
+                    id= task.id,
                     label = task.label,
                     description = task.description,
                     status = task.status,

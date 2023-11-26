@@ -1,8 +1,5 @@
 package com.human_booster.examandroidkotlinapp.ui.home
 
-import android.content.ClipDescription
-import android.content.Intent
-import android.net.Uri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.human_booster.examandroidkotlinapp.BaseApplication
@@ -30,7 +27,7 @@ class HomeViewModel : ViewModel() {
         }
     }
 
-    fun onAddTask(label: String, description: String) {
+    fun addTask(label: String, description: String) {
         viewModelScope.launch {
             taskRepository.add(label, description)
         }
@@ -41,7 +38,7 @@ class HomeViewModel : ViewModel() {
         }
     }
 
-    fun onEditTask(
+    fun editTask(
         task: Task,
         newLabel: String,
         newDescription: String,
@@ -52,6 +49,18 @@ class HomeViewModel : ViewModel() {
                 task.copy(
                     label = newLabel,
                     description = newDescription,
+                    status = newStatus
+                )
+            )
+        }
+    }
+    fun checkTask(
+        task: Task,
+        newStatus: Boolean
+    ) {
+        viewModelScope.launch {
+            taskRepository.update(
+                task.copy(
                     status = newStatus
                 )
             )
